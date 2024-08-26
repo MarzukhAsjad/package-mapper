@@ -1,6 +1,4 @@
-package com.example.mizookie.packagemapper.services.github.implementations;
-
-import com.example.mizookie.packagemapper.services.github.GithubRepositoryService;
+package com.example.mizookie.packagemapper.services.implementations;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +7,8 @@ import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+
+import com.example.mizookie.packagemapper.services.GithubRepositoryService;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,7 +70,7 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
     }
 
     @Override
-    public String deleteRepository() throws Exception {
+    public String deleteRepository() throws IOException {
         Path directoryPath = Paths.get(localRepositoryDirectory);
 
         if (Files.exists(directoryPath) && Files.isDirectory(directoryPath)) {

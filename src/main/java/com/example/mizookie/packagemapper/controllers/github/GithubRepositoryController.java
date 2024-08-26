@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.mizookie.packagemapper.dto.user.GithubRepositoryInfoRequest;
-import com.example.mizookie.packagemapper.services.github.GithubRepositoryService;
+import com.example.mizookie.packagemapper.services.GithubRepositoryService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,20 +29,22 @@ public class GithubRepositoryController {
         this.githubRepositoryService = githubRepositoryService;
     }
 
+    private static final String MESSAGE_KEY = "message";
+
     /**
      * This method downloads a public GitHub repository to the local file system.
      * @param requestBody The request body containing the URL of the repository to download.
      * @return A response entity containing a message indicating the result of the download operation.
      */
     @PostMapping("/download")
-    private ResponseEntity<Map<String, Object>> downloadPublicRepository(@RequestBody GithubRepositoryInfoRequest requestBody) {
+    ResponseEntity<Map<String, Object>> downloadPublicRepository(@RequestBody GithubRepositoryInfoRequest requestBody) {
         String repositoryUrlString = requestBody.getRepositoryUrl();
         log.info("Downloading repository: {}", repositoryUrlString);
         try {
             String responseMessageString = githubRepositoryService.downloadPublicRepository(repositoryUrlString);
-            return ResponseEntity.ok(Map.of("message", responseMessageString));
+            return ResponseEntity.ok(Map.of(MESSAGE_KEY, responseMessageString));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+            return ResponseEntity.badRequest().body(Map.of(MESSAGE_KEY, e.getMessage()));
         }
     }
 
@@ -52,13 +54,13 @@ public class GithubRepositoryController {
      * @return A response entity containing a message indicating the result of the delete operation.
      */
     @PostMapping("/delete")
-    private ResponseEntity<Map<String, Object>> deleteRepository() {
+    ResponseEntity<Map<String, Object>> deleteRepository() {
         log.info("Deleting repository...");
         try {
             String responseMessageString = githubRepositoryService.deleteRepository();
-            return ResponseEntity.ok(Map.of("message", responseMessageString));
+            return ResponseEntity.ok(Map.of(MESSAGE_KEY, responseMessageString));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
+            return ResponseEntity.badRequest().body(Map.of(MESSAGE_KEY, e.getMessage()));
         }
     } 
 }

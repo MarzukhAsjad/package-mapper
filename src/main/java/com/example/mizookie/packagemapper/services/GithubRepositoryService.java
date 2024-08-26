@@ -1,6 +1,7 @@
-package com.example.mizookie.packagemapper.services.github;
+package com.example.mizookie.packagemapper.services;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.stereotype.Service;
+import java.io.IOException;
 
 /**
  * This interface represents a service for interacting with GitHub repositories.
@@ -8,6 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public interface GithubRepositoryService {
     String downloadPublicRepository(String repositoryUrlString) throws GitAPIException;
-    String deleteRepository() throws Exception;
+    String deleteRepository() throws IOException;
     void downloadPrivateRepository(String repositoryUrlString, String token);
 }
