@@ -1,4 +1,5 @@
 package com.example.mizookie.packagemapper.services.github.implementations;
+
 import com.example.mizookie.packagemapper.services.github.GithubRepositoryService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,8 @@ import java.nio.file.Paths;
 import java.util.Comparator;
 
 /**
- * Implementation of the GithubRepositoryService interface that provides methods for downloading public and private repositories from GitHub.
+ * Implementation of the GithubRepositoryService interface that provides methods
+ * for downloading public and private repositories from GitHub.
  */
 @Slf4j
 @Service
@@ -25,25 +27,27 @@ import java.util.Comparator;
 public class GithubRepositoryServiceImpl implements GithubRepositoryService {
 
     @Value("${repository.directory}")
-    private String LOCAL_REPOSITORY_DIRECTORY;
+    private String localRepositoryDirectory;
 
     /**
      * This method downloads a public GitHub repository to the local file system.
+     * 
      * @param repositoryUrlString The URL of the repository to download.
      * @return A message indicating the result of the download operation.
      */
     @Override
     public String downloadPublicRepository(String repositoryUrlString) throws GitAPIException {
         try {
-            // Create a new File object to represent the local directory where the repository will be cloned
-            File localDirectory = new File(LOCAL_REPOSITORY_DIRECTORY);
+            // Create a new File object to represent the local directory where the
+            // repository will be cloned
+            File localDirectory = new File(localRepositoryDirectory);
 
             // Clone the repository using JGit library
             Git.cloneRepository()
-                .setURI(repositoryUrlString) // Set the repository URL
-                .setDirectory(localDirectory) // Set the local directory
-                .call();
-            
+                    .setURI(repositoryUrlString) // Set the repository URL
+                    .setDirectory(localDirectory) // Set the local directory
+                    .call();
+
             // Shutdown the Git object
             Git.shutdown();
 
@@ -55,8 +59,10 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
 
     /**
      * This method downloads a private GitHub repository to the local file system.
+     * 
      * @param repositoryUrlString The URL of the repository to download.
-     * @param token The access token for authenticating with the GitHub API.
+     * @param token               The access token for authenticating with the
+     *                            GitHub API.
      */
     @Override
     public void downloadPrivateRepository(String repositoryUrlString, String token) {
@@ -65,25 +71,26 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
 
     @Override
     public String deleteRepository() throws Exception {
-        Path directoryPath = Paths.get(LOCAL_REPOSITORY_DIRECTORY);
+        Path directoryPath = Paths.get(localRepositoryDirectory);
 
         if (Files.exists(directoryPath) && Files.isDirectory(directoryPath)) {
             log.info("Deleting repository directory... for {}", directoryPath.toAbsolutePath());
 
             try (Stream<Path> paths = Files.walk(directoryPath)) {
                 paths.sorted(Comparator.reverseOrder())
-                     .forEach(path -> {
-                         File file = path.toFile();
-                         log.info(path.toString());
-                         if (!file.canWrite()) {
-                             file.setWritable(true);
-                         }
-                         try {
-                             Files.delete(path);
-                         } catch (IOException e) {
-                             log.error("Failed to delete: " + path, e);
-                         }
-                     });
+                        .forEach(path -> {
+                            File file = path.toFile();
+                            log.info(path.toString());
+                            if (!file.canWrite() && !file.setWritable(true)) {
+                                log.error("Failed to set write permission: " + path);
+                            }
+
+                            try {
+                                Files.delete(path);
+                            } catch (IOException e) {
+                                log.error("Failed to delete: " + path, e);
+                            }
+                        });
             } catch (IOException e) {
                 log.error("Failed to delete directory", e);
                 throw e;
