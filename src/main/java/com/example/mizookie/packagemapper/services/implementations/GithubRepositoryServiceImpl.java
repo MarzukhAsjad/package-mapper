@@ -29,6 +29,8 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
     @Value("${repository.directory}")
     private String localRepositoryDirectory;
 
+    private Git git;
+
     /**
      * This method downloads a public GitHub repository to the local file system.
      * 
@@ -38,18 +40,13 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
     @Override
     public String downloadPublicRepository(String repositoryUrlString) throws GitAPIException {
         try {
-            // Create a new File object to represent the local directory where the
-            // repository will be cloned
             File localDirectory = new File(localRepositoryDirectory);
 
-            // Clone the repository using JGit library
-            Git.cloneRepository()
+            // Clone the repository to the local directory
+            git = Git.cloneRepository()
                     .setURI(repositoryUrlString) // Set the repository URL
                     .setDirectory(localDirectory) // Set the local directory
                     .call();
-
-            // Shutdown the Git object
-            Git.shutdown();
 
             return "Repository downloaded successfully!";
         } catch (GitAPIException e) {
@@ -72,34 +69,38 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
     @Override
     public String deleteRepository() throws IOException {
         Path directoryPath = Paths.get(localRepositoryDirectory);
-
+    
         if (Files.exists(directoryPath) && Files.isDirectory(directoryPath)) {
             log.info("Deleting repository directory... for {}", directoryPath.toAbsolutePath());
-
-            try (Stream<Path> paths = Files.walk(directoryPath)) {
-                paths.sorted(Comparator.reverseOrder())
-                        .forEach(path -> {
-                            File file = path.toFile();
-                            log.info(path.toString());
-                            if (!file.canWrite() && !file.setWritable(true)) {
-                                log.error("Failed to set write permission: " + path);
-                            }
-
-                            try {
-                                Files.delete(path);
-                            } catch (IOException e) {
-                                log.error("Failed to delete: " + path, e);
-                            }
-                        });
-            } catch (IOException e) {
-                log.error("Failed to delete directory", e);
+            
+            // Close the Git repository and shutdown the Git instance
+            try {
+                git.close();
+                git = null;
+                Git.shutdown();
+                // Delete the repository directory and its contents recursively
+                removeRecursively(directoryPath.toFile());
+            } catch (Exception e) {
+                log.error("Failed to delete repository directory: {}", e.getMessage());
                 throw e;
             }
-
-            Files.createDirectories(directoryPath); // Recreate the empty directory
+            // Recreate the empty directory
+            Files.createDirectories(directoryPath);
             return "Repository directory deleted!";
+        } else if (git == null) {
+            return "Repository directory is already deleted!";
         } else {
             return "Repository directory not found!";
         }
+    }
+
+    // Helper method to remove a directory and its contents recursively
+    private static void removeRecursively(File f) {
+        if (f.isDirectory()) {
+            for (File c : f.listFiles()) {
+               removeRecursively(c);
+            }
+        }
+        f.delete();
     }
 }
