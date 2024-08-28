@@ -1,4 +1,4 @@
-package com.example.mizookie.packagemapper.services;
+package com.mizookie.mizookie.packagemapper.services;
 import java.util.Map;
 
 public interface CodeCrawler {

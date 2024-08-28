@@ -1,4 +1,4 @@
-package com.example.mizookie.packagemapper.services;
+package com.mizookie.mizookie.packagemapper.services;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.stereotype.Service;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.example.mizookie.packagemapper.services.implementations;
+package com.mizookie.mizookie.packagemapper.services.implementations;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,7 +7,7 @@ import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import com.example.mizookie.packagemapper.services.GithubRepositoryService;
+import com.mizookie.mizookie.packagemapper.services.GithubRepositoryService;
 
 import java.io.File;
 import java.io.IOException;
