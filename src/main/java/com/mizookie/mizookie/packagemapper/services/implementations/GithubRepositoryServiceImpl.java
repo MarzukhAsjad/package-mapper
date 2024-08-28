@@ -56,8 +56,8 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
      * This method downloads a private GitHub repository to the local file system.
      * 
      * @param repositoryUrlString The URL of the repository to download.
-     * @param token               The access token for authenticating with the
-     *                            GitHub API.
+     * @param token               The access token for authenticating with GitHub
+     *                            for cloning the private repository.
      */
     @Override
     public void downloadPrivateRepository(String repositoryUrlString, String token) {
