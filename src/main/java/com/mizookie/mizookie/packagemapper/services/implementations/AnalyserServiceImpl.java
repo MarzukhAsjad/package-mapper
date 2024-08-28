@@ -58,9 +58,24 @@ public class AnalyserServiceImpl implements AnalyserService {
     public void analyse(String repositoryPath) {
         List<String> repoFiles = getFiles(repositoryPath);
         for (String file : repoFiles) {
+            // Skip files that do not have the following extensions or contain ".git"
+            String[] doNotSkipExtensions = {".java", ".js", ".ts", ".jsx", ".tsx", ".c", ".cpp", ".csharp", ".py", ".rb", ".kt"};
+            boolean skipFile = true;
+            for (String extension : doNotSkipExtensions) {
+                if (file.endsWith(extension)) {
+                    skipFile = false;
+                    break;
+                }
+            }
+            if (skipFile || file.contains(".git")) {
+                log.info("Skipping file: {}", file);
+                continue;
+            }
+            
             List<String> imports = parse(crawl(file));
             classesMap.put(file, imports);
         }
+        
         // Add the parsed data as value for the key "path" in the classesMap
         visualize(classesMap);
     }
