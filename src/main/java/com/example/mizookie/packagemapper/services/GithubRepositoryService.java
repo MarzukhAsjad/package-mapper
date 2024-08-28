@@ -9,6 +9,6 @@ import java.io.IOException;
 @Service
 public interface GithubRepositoryService {
     String downloadPublicRepository(String repositoryUrlString) throws GitAPIException;
-    String deleteRepository() throws IOException;
+    String deleteRepository() throws IOException, GitAPIException;
     void downloadPrivateRepository(String repositoryUrlString, String token);
 }

@@ -2,7 +2,6 @@ package com.example.mizookie.packagemapper.services.implementations;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import java.util.stream.Stream;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.springframework.stereotype.Component;
@@ -15,7 +14,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Comparator;
 
 /**
  * Implementation of the GithubRepositoryService interface that provides methods
@@ -67,7 +65,7 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
     }
 
     @Override
-    public String deleteRepository() throws IOException {
+    public String deleteRepository() throws IOException, GitAPIException {
         Path directoryPath = Paths.get(localRepositoryDirectory);
     
         if (Files.exists(directoryPath) && Files.isDirectory(directoryPath)) {
@@ -101,6 +99,8 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
                removeRecursively(c);
             }
         }
-        f.delete();
+        if (!f.delete()) {
+            log.error("Failed to delete file: {}", f.getAbsolutePath());
+        }
     }
 }
