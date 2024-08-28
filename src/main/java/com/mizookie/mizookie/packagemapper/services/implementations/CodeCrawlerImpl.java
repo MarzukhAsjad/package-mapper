@@ -69,8 +69,7 @@ public class CodeCrawlerImpl implements CodeCrawler {
     private List<String> getImports(String line) {
         List<String> imports = new ArrayList<>();
         if (Boolean.TRUE.equals(isImportStatement(line))) {
-            String importStatement = line
-                    .replace("import", "")
+            String importStatement = line.replace("import", "")
                     .replace(";", "")
                     .replace("\n", "")
                     .trim();
