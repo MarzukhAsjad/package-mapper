@@ -15,6 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class CodeCrawlerImpl implements CodeCrawler {
+    private Map<String, String> classesMap;
+    private List<String> repoFiles;
+
     @Override
     public String crawl(String path) {
         StringBuilder code = new StringBuilder();
@@ -42,6 +45,16 @@ public class CodeCrawlerImpl implements CodeCrawler {
     @Override
     public void visualize(Map<String, String> classesMap) {
         // TODO: Visualize the parsed data in a graphical format
+    }
+
+    @Override
+    public void orchestrate(String repositoryPath) {
+        repoFiles = getFiles(repositoryPath);
+        for (String file : repoFiles) {
+            String code = crawl(file);
+            parse(code);
+        }
+        visualize(classesMap);
     }
     
     // Helper methods for parsing the code
