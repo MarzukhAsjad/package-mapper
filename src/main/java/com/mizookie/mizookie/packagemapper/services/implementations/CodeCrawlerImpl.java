@@ -53,7 +53,7 @@ public class CodeCrawlerImpl implements CodeCrawler {
     public void orchestrate(String repositoryPath) {
         repoFiles = getFiles(repositoryPath);
         for (String file : repoFiles) {
-            List<String> imports = parse(crawl(file))
+            List<String> imports = parse(crawl(file));
             classesMap.put(file, imports);
         }
         // Add the parsed data as value for the key "path" in the classesMap
