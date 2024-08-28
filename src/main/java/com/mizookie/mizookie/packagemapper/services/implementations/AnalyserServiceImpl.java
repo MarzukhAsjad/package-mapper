@@ -54,7 +54,7 @@ public class AnalyserServiceImpl implements AnalyserService {
     }
 
     @Override
-    public void orchestrate(String repositoryPath) {
+    public void analyse(String repositoryPath) {
         List<String> repoFiles = getFiles(repositoryPath);
         for (String file : repoFiles) {
             List<String> imports = parse(crawl(file));
