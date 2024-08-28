@@ -10,13 +10,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.HashMap;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
 public class AnalyserServiceImpl implements AnalyserService {
-    private Map<String, List<String>> classesMap;
+    private Map<String, List<String>> classesMap = new HashMap<>();
 
     @Override
     public String crawl(String path) {
