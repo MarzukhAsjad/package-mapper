@@ -1,12 +1,10 @@
 package com.mizookie.mizookie.packagemapper.services.implementations;
 import java.util.Map;
 
-import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
-import java.util.stream.Collectors;
 import java.util.ArrayList;
 
-import com.mizookie.mizookie.packagemapper.services.CodeCrawler;
+import com.mizookie.mizookie.packagemapper.services.AnalyserService;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,9 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class CodeCrawlerImpl implements CodeCrawler {
+public class AnalyserServiceImpl implements AnalyserService {
     private Map<String, List<String>> classesMap;
-    private List<String> repoFiles;
 
     @Override
     public String crawl(String path) {
@@ -47,11 +44,18 @@ public class CodeCrawlerImpl implements CodeCrawler {
     @Override
     public void visualize(Map<String, List<String>> classesMap) {
         // TODO: Visualize the parsed data in a graphical format
+        log.info("Visualizing the parsed data...");
+        for (Map.Entry<String, List<String>> entry : classesMap.entrySet()) {
+            log.info("File: {}", entry.getKey());
+            for (String importStatement : entry.getValue()) {
+                log.info("----- Import: {}", importStatement);
+            }
+        }
     }
 
     @Override
     public void orchestrate(String repositoryPath) {
-        repoFiles = getFiles(repositoryPath);
+        List<String> repoFiles = getFiles(repositoryPath);
         for (String file : repoFiles) {
             List<String> imports = parse(crawl(file));
             classesMap.put(file, imports);
@@ -74,7 +78,7 @@ public class CodeCrawlerImpl implements CodeCrawler {
                     .replace("\n", "")
                     .trim();
             
-            log.info("Import statement: {}", importStatement);
+            log.info("Import: |{}|", importStatement);
             imports.add(importStatement);
         }
         return imports;
