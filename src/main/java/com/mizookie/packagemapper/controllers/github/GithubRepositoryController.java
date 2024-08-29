@@ -1,4 +1,4 @@
-package com.mizookie.mizookie.packagemapper.controllers.github;
+package com.mizookie.packagemapper.controllers.github;
 
 import java.util.Map;
 
@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mizookie.mizookie.packagemapper.dto.user.GithubRepositoryInfoRequest;
-import com.mizookie.mizookie.packagemapper.services.GithubRepositoryService;
+import com.mizookie.packagemapper.dto.user.GithubRepositoryInfoRequest;
+import com.mizookie.packagemapper.services.GithubRepositoryService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestBody;

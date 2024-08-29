@@ -1,4 +1,4 @@
-package com.mizookie.mizookie.packagemapper.services;
+package com.mizookie.packagemapper.services;
 import java.util.Map;
 import java.util.List;
 

@@ -1,11 +1,11 @@
-package com.mizookie.mizookie.packagemapper.services.implementations;
+package com.mizookie.packagemapper.services.implementations;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
+
+import com.mizookie.packagemapper.services.AnalyserService;
+
 import java.util.ArrayList;
-
-import com.mizookie.mizookie.packagemapper.services.AnalyserService;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -37,8 +37,7 @@ public class AnalyserServiceImpl implements AnalyserService {
 
     @Override
     public List<String> parse(String data) {
-        // TODO: Parse the data and store it in a data structure while 
-        // maintaining the relationships between the classes
+        // Parsing can be improved by using a more sophisticated parser in the future
         return getImports(data);
     }
 

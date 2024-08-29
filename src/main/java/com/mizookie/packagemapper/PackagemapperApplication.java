@@ -1,4 +1,4 @@
-package com.mizookie.mizookie.packagemapper;
+package com.mizookie.packagemapper;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
