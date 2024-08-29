@@ -34,3 +34,7 @@ build/
 
 ### Repositories ###
 !**/src/main/**/repositories/
+
+### Logs ###
+*.log
+*.txt
