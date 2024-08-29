@@ -1,6 +1,37 @@
 # Package Mapper
 
-Package Mapper is a web-based tool that provides a visual representation of the classes and their dependencies within a GitHub repository. It supports JavaScript projects and aims to expand to other languages in the future.
+Package Mapper is an open-source tool that provides a visual representation of the classes and their dependencies within a GitHub repository. It supports any JavaScript and Java based projects and aims to expand to other languages in the future.
+
+## Installation
+
+To install Package Mapper, follow these steps:
+
+1. Clone this repository to your local machine:
+    ```shell
+    git clone https://github.com/MarzukhAsjad/package-mapper.git
+    ```
+
+2. Navigate to the `packagemapper` directory:
+    ```shell
+    cd packagemapper
+    ```
+
+3. Run the application using Maven:
+    ```shell
+    mvn spring-boot:run
+    ```
+
+## Usage
+
+To use Package Mapper, you can send `POST` requests to the following endpoints:
+
+1. `/repository/download`: Downloads the code from the specified GitHub repository.
+
+2. `/repository/delete`: Deletes the downloaded code from the local storage.
+
+3. `/repository/analyse`: Analyzes the downloaded code and generates the dependency graph.
+
+Note: Package Mapper requires Java (JDK 21) to be installed on your machine.
 
 ## Overview
 
