@@ -11,14 +11,14 @@ To install Package Mapper, follow these steps:
 git clone https://github.com/MarzukhAsjad/package-mapper.git
 ```
 
-2. Create a `.env` file in the root directory with the following variable(s):
-```
-REPOSITORY_DIRECTORY=<path where all repositories will be downloaded>
-```
-
-3. Navigate to the `package-mapper` directory:
+2. Navigate to the `package-mapper` directory:
 ```shell
 cd package-mapper
+```
+
+3. Create a `.env` file in the root directory with the following variable(s):
+```
+REPOSITORY_DIRECTORY=<path where all repositories will be downloaded>
 ```
 
 4. Run the application using Maven:
