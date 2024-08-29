@@ -67,8 +67,15 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
     @Override
     public String deleteRepository() throws IOException, GitAPIException {
         Path directoryPath = Paths.get(localRepositoryDirectory);
-    
-        if (Files.exists(directoryPath) && Files.isDirectory(directoryPath)) {
+        
+        if (git == null) {
+            // try to forcefully delete the directory
+            removeRecursively(directoryPath.toFile());
+            // Recreate the empty directory
+            Files.createDirectories(directoryPath);
+            return "Repository directory deleted!";
+        }
+        else if (Files.exists(directoryPath) && Files.isDirectory(directoryPath)) {
             log.info("Deleting repository directory... for {}", directoryPath.toAbsolutePath());
             
             // Close the Git repository and shutdown the Git instance
@@ -85,8 +92,6 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
             // Recreate the empty directory
             Files.createDirectories(directoryPath);
             return "Repository directory deleted!";
-        } else if (git == null) {
-            return "Repository directory is already deleted!";
         } else {
             return "Repository directory not found!";
         }
