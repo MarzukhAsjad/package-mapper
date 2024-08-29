@@ -7,19 +7,24 @@ Package Mapper is an open-source tool that provides a visual representation of t
 To install Package Mapper, follow these steps:
 
 1. Clone this repository to your local machine:
-    ```shell
-    git clone https://github.com/MarzukhAsjad/package-mapper.git
-    ```
+```shell
+git clone https://github.com/MarzukhAsjad/package-mapper.git
+```
 
-2. Navigate to the `package-mapper` directory:
-    ```shell
-    cd package-mapper
-    ```
+2. Create a `.env` file in the root directory with the following variable(s):
+```
+REPOSITORY_DIRECTORY=<path where all repositories will be downloaded>
+```
 
-3. Run the application using Maven:
-    ```shell
-    mvnw spring-boot:run
-    ```
+3. Navigate to the `package-mapper` directory:
+```shell
+cd package-mapper
+```
+
+4. Run the application using Maven:
+```shell
+mvnw spring-boot:run
+```
 
 ## Usage
 
@@ -27,9 +32,25 @@ To use Package Mapper, you can send `POST` requests to the following endpoints:
 
 1. `/repository/download`: Downloads the code from the specified GitHub repository.
 
+The following JSON can be used as the request body (example):
+```json
+{
+    "url": "https://github.com/DrKLO/Telegram.git"
+}
+```
+
 2. `/repository/delete`: Deletes the downloaded code from the local storage.
 
-3. `/repository/analyse`: Analyzes the downloaded code and generates the dependency graph.
+No request body is required. If you have downloaded a repository and have not closed the application or deleted the repository yet, this endpoint will automatically delete that specific repository. Otherwise, it will delete all repositories by default.
+
+3. `/analyse/custom`: Analyzes the downloaded code and generates the dependency graph.
+
+Pass in the absolute path of the local repository you just downloaded as a string. Please note that this should be a string, not a JSON.
+
+Example:
+```
+C:\Users\User\PackageMapper\repositories\Telegram
+```
 
 Note: Package Mapper requires Java (JDK 21) to be installed on your machine.
 
