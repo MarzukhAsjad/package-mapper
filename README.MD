@@ -26,6 +26,8 @@ REPOSITORY_DIRECTORY=<path where all repositories will be downloaded>
 mvnw spring-boot:run
 ```
 
+**Note:** Package Mapper requires Java (JDK 21) to be installed on your machine.
+
 ## Usage
 
 To use Package Mapper, you can send `POST` requests to the following endpoints:
@@ -51,8 +53,6 @@ Example:
 ```
 C:\Users\User\PackageMapper\repositories\Telegram
 ```
-
-Note: Package Mapper requires Java (JDK 21) to be installed on your machine.
 
 ## Overview
 
