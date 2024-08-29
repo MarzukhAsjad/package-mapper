@@ -11,9 +11,9 @@ To install Package Mapper, follow these steps:
     git clone https://github.com/MarzukhAsjad/package-mapper.git
     ```
 
-2. Navigate to the `packagemapper` directory:
+2. Navigate to the `package-mapper` directory:
     ```shell
-    cd packagemapper
+    cd package-mapper
     ```
 
 3. Run the application using Maven:
