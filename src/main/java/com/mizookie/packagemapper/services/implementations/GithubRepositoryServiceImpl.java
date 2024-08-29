@@ -29,8 +29,13 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
 
     private String userRepositoryDirectory;
 
-    private Git git; // Keep the Git instance as a class variable
+    private Git git;
 
+    /**
+     * Downloads a public GitHub repository to the local file system.
+     * @param repositoryUrlString The URL of the repository to download.
+     * @return A message indicating the result of the download operation.
+     */
     @Override
     public String downloadPublicRepository(String repositoryUrlString) throws GitAPIException {
         try {
@@ -56,11 +61,20 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
         }
     }
 
+    /**
+     * Downloads a private GitHub repository to the local file system.
+     * @param repositoryUrlString The URL of the repository to download.
+     * @param token The access token for the private repository.
+     */
     @Override
     public void downloadPrivateRepository(String repositoryUrlString, String token) {
         // TODO: Implement method to download private repositories
     }
 
+    /**
+     * Deletes a GitHub repository from the local file system.
+     * @return A message indicating the result of the delete operation.
+     */
     @Override
     public String deleteRepository() throws IOException, GitAPIException {
         Path directoryPath = null;

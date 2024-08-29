@@ -18,38 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class AnalyserServiceImpl implements AnalyserService {
+
     private Map<String, List<String>> classesMap = new HashMap<>();
-
-    /**
-     * This method reads the code from a file and returns it as a string.
-     * @param path The path to the file to read.
-     */
-    @Override
-    public String crawl(String path) {
-        StringBuilder code = new StringBuilder();
-        try {
-            List<String> lines = Files.readAllLines(Paths.get(path));
-            for (String line : lines) {
-                if (Boolean.TRUE.equals(isImportStatement(line))) {
-                    code.append(line).append("\n");
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return code.toString();
-    }
-
-    /**
-     * This method parses the code and returns the imports as a list of strings.
-     * @param data The code to parse.
-     */
-    @Override
-    public List<String> parse(String data) {
-        // Parsing can be improved by using a more sophisticated parser in the future
-        return getImports(data);
-    }
-
+    
     /**
      * This method visualizes the parsed data in a graphical format.
      * @param classesMap The map containing the parsed data.
@@ -97,6 +68,29 @@ public class AnalyserServiceImpl implements AnalyserService {
         // Add the parsed data as value for the key "path" in the classesMap
         visualize(classesMap);
     }
+
+    // This method crawls the code in the repository and extracts the imports
+    private String crawl(String path) {
+        StringBuilder code = new StringBuilder();
+        try {
+            List<String> lines = Files.readAllLines(Paths.get(path));
+            for (String line : lines) {
+                if (Boolean.TRUE.equals(isImportStatement(line))) {
+                    code.append(line).append("\n");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return code.toString();
+    }
+
+    // This method parses the imports from the code 
+    private List<String> parse(String data) {
+        // Parsing can be improved by using a more sophisticated parser in the future
+        return getImports(data);
+    }
+
     
     // Helper methods for parsing the code
     private Boolean isImportStatement(String line) {
