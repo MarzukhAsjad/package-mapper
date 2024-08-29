@@ -4,6 +4,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import com.mizookie.packagemapper.services.AnalyserService;
+import com.mizookie.packagemapper.utils.Printer;
 
 import java.util.ArrayList;
 import java.io.IOException;
@@ -43,12 +44,12 @@ public class AnalyserServiceImpl implements AnalyserService {
 
     @Override
     public void visualize(Map<String, List<String>> classesMap) {
-        // TODO: Visualize the parsed data in a graphical format
+        // Improve visualization of the parsed data in a graphical format
         log.info("Visualizing the parsed data...");
         for (Map.Entry<String, List<String>> entry : classesMap.entrySet()) {
-            log.info("File: {}", entry.getKey());
+            Printer.log("Current File: " + entry.getKey());
             for (String importStatement : entry.getValue()) {
-                log.info("----- Import: {}", importStatement);
+                Printer.log("----- Import: " + importStatement);
             }
         }
     }
@@ -56,6 +57,7 @@ public class AnalyserServiceImpl implements AnalyserService {
     @Override
     public void analyse(String repositoryPath) {
         List<String> repoFiles = getFiles(repositoryPath);
+        Printer.log("Analyzing repository: " + repositoryPath);
         for (String file : repoFiles) {
             // Skip files that do not have the following extensions or contain ".git"
             String[] doNotSkipExtensions = {".java", ".js", ".ts", ".jsx", ".tsx", ".c", ".cpp", ".csharp", ".py", ".rb", ".kt"};
