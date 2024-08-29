@@ -20,6 +20,10 @@ import lombok.extern.slf4j.Slf4j;
 public class AnalyserServiceImpl implements AnalyserService {
     private Map<String, List<String>> classesMap = new HashMap<>();
 
+    /**
+     * This method reads the code from a file and returns it as a string.
+     * @param path The path to the file to read.
+     */
     @Override
     public String crawl(String path) {
         StringBuilder code = new StringBuilder();
@@ -36,12 +40,20 @@ public class AnalyserServiceImpl implements AnalyserService {
         return code.toString();
     }
 
+    /**
+     * This method parses the code and returns the imports as a list of strings.
+     * @param data The code to parse.
+     */
     @Override
     public List<String> parse(String data) {
         // Parsing can be improved by using a more sophisticated parser in the future
         return getImports(data);
     }
 
+    /**
+     * This method visualizes the parsed data in a graphical format.
+     * @param classesMap The map containing the parsed data.
+     */
     @Override
     public void visualize(Map<String, List<String>> classesMap) {
         // Improve visualization of the parsed data in a graphical format
@@ -54,6 +66,11 @@ public class AnalyserServiceImpl implements AnalyserService {
         }
     }
 
+    /**
+     * This method orchestrates the crawling, parsing and visualization of the code
+     * in the repository.
+     * @param repositoryPath The path to the repository to analyze.
+     */
     @Override
     public void analyse(String repositoryPath) {
         List<String> repoFiles = getFiles(repositoryPath);
@@ -100,6 +117,7 @@ public class AnalyserServiceImpl implements AnalyserService {
         }
         return imports;
     }
+
     // Helper method for extracting filenames under a directory
     private List<String> getFiles(String directoryPath) {
         List<String> files = null;
