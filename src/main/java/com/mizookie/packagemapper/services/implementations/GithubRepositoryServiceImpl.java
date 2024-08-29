@@ -27,18 +27,22 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
     @Value("${repository.directory}")
     private String localRepositoryDirectory;
 
-    private Git git;
+    private String userRepositoryDirectory;
 
-    /**
-     * This method downloads a public GitHub repository to the local file system.
-     * 
-     * @param repositoryUrlString The URL of the repository to download.
-     * @return A message indicating the result of the download operation.
-     */
+    private Git git; // Keep the Git instance as a class variable
+
     @Override
     public String downloadPublicRepository(String repositoryUrlString) throws GitAPIException {
         try {
-            File localDirectory = new File(localRepositoryDirectory);
+            // Extract the repository name from the URL
+            String repositoryName = getRepositoryName(repositoryUrlString);
+            userRepositoryDirectory = localRepositoryDirectory + "/" + repositoryName;
+            File localDirectory = new File(userRepositoryDirectory);
+
+            // Close the previous Git instance if it exists
+            if (git != null) {
+                git.close();
+            }
 
             // Clone the repository to the local directory
             git = Git.cloneRepository()
@@ -52,13 +56,6 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
         }
     }
 
-    /**
-     * This method downloads a private GitHub repository to the local file system.
-     * 
-     * @param repositoryUrlString The URL of the repository to download.
-     * @param token               The access token for authenticating with GitHub
-     *                            for cloning the private repository.
-     */
     @Override
     public void downloadPrivateRepository(String repositoryUrlString, String token) {
         // TODO: Implement method to download private repositories
@@ -66,42 +63,52 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
 
     @Override
     public String deleteRepository() throws IOException, GitAPIException {
-        Path directoryPath = Paths.get(localRepositoryDirectory);
-        
-        if (git == null) {
-            // try to forcefully delete the directory
+        Path directoryPath = null;
+        // Force delete all repositories if invoked right after the application starts
+        if (userRepositoryDirectory == null) {
+            directoryPath = Paths.get(localRepositoryDirectory);
             removeRecursively(directoryPath.toFile());
-            // Recreate the empty directory
             Files.createDirectories(directoryPath);
-            return "Repository directory deleted!";
+            return "All repositories have been deleted.";
         }
-        else if (Files.exists(directoryPath) && Files.isDirectory(directoryPath)) {
-            log.info("Deleting repository directory... for {}", directoryPath.toAbsolutePath());
-            
+        // Delete specific repository directory if it exists
+        directoryPath = Paths.get(userRepositoryDirectory);
+        if (Files.exists(directoryPath) && Files.isDirectory(directoryPath)) {
             // Close the Git repository and shutdown the Git instance
             try {
-                git.close();
-                git = null;
-                Git.shutdown();
+                if (git != null) {
+                    git.close(); // Close the Git instance
+                    git = null; // Set git to null after closing
+                }
                 // Delete the repository directory and its contents recursively
+                log.info("Deleting repository directory: {}", directoryPath);
                 removeRecursively(directoryPath.toFile());
             } catch (Exception e) {
                 log.error("Failed to delete repository directory: {}", e.getMessage());
                 throw e;
             }
-            // Recreate the empty directory
-            Files.createDirectories(directoryPath);
+            userRepositoryDirectory = null;
             return "Repository directory deleted!";
         } else {
             return "Repository directory not found!";
         }
     }
 
-    // Helper method to remove a directory and its contents recursively
-    private static void removeRecursively(File f) {
+    // Helper method to extract the repository name from the URL
+    private String getRepositoryName(String repositoryUrlString) {
+        String[] urlParts = repositoryUrlString.split("/");
+        String repositoryName = urlParts[urlParts.length - 1];
+        if (repositoryName.endsWith(".git")) {
+            repositoryName = repositoryName.substring(0, repositoryName.length() - 4);
+        }
+        return repositoryName;
+    }
+
+    // Helper method to delete a directory and its contents recursively
+    private void removeRecursively(File f) {
         if (f.isDirectory()) {
             for (File c : f.listFiles()) {
-               removeRecursively(c);
+                removeRecursively(c);
             }
         }
         if (!f.delete()) {
