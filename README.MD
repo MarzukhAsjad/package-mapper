@@ -18,7 +18,7 @@ To install Package Mapper, follow these steps:
 
 3. Run the application using Maven:
     ```shell
-    mvn spring-boot:run
+    mvnw spring-boot:run
     ```
 
 ## Usage
