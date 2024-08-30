@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.mizookie.packagemapper.services.AnalyserService;
+import com.mizookie.packagemapper.utils.FileService;
 import com.mizookie.packagemapper.utils.Printer;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class AnalyserServiceImpl implements AnalyserService {
      */
     @Override
     public void analyse(String repositoryPath) {
-        List<String> repoFiles = getFiles(repositoryPath);
+        List<String> repoFiles = FileService.getFiles(repositoryPath);
         Printer.log("Analyzing repository: " + repositoryPath);
         for (String file : repoFiles) {
             // Skip files that do not have the following extensions or contain ".git"
@@ -82,10 +83,7 @@ public class AnalyserServiceImpl implements AnalyserService {
         log.info("Analyzing all local repositories...");
         
         // Crawl through all repositories within the local repository directory
-        List<String> repositories = Files.walk(Paths.get(localRepositoryDirectory))
-                .filter(Files::isDirectory)
-                .map(Object::toString)
-                .toList();
+        List<String> repositories = FileService.getDirectories(localRepositoryDirectory);
 
         for (String repository : repositories) {
             analyse(repository);
@@ -133,19 +131,5 @@ public class AnalyserServiceImpl implements AnalyserService {
             imports.add(importStatement);
         }
         return imports;
-    }
-
-    // Helper method for extracting filenames under a directory
-    private List<String> getFiles(String directoryPath) {
-        List<String> files = null;
-        try {
-            files = Files.walk(Paths.get(directoryPath))
-                    .filter(Files::isRegularFile)
-                    .map(Object::toString)
-                    .toList();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return files;
     }
 }
