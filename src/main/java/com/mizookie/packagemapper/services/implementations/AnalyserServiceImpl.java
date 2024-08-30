@@ -1,6 +1,7 @@
 package com.mizookie.packagemapper.services.implementations;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.mizookie.packagemapper.services.AnalyserService;
@@ -18,6 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class AnalyserServiceImpl implements AnalyserService {
+
+    @Value("${repository.directory}")
+    private String localRepositoryDirectory;
 
     private Map<String, List<String>> classesMap = new HashMap<>();
     
@@ -67,6 +71,25 @@ public class AnalyserServiceImpl implements AnalyserService {
         
         // Add the parsed data as value for the key "path" in the classesMap
         visualize(classesMap);
+    }
+
+    /**
+     * This method analyzes all repositories.
+     */
+    @Override
+    public void analyse() throws IOException {
+        // Analyze all local repositories
+        log.info("Analyzing all local repositories...");
+        
+        // Crawl through all repositories within the local repository directory
+        List<String> repositories = Files.walk(Paths.get(localRepositoryDirectory))
+                .filter(Files::isDirectory)
+                .map(Object::toString)
+                .toList();
+
+        for (String repository : repositories) {
+            analyse(repository);
+        }
     }
 
     // This method crawls the code in the repository and extracts the imports
