@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.mizookie.packagemapper.services.GithubRepositoryService;
+import com.mizookie.packagemapper.utils.FileService;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
     @Value("${repository.directory}")
     private String localRepositoryDirectory;
 
+    // Absolute path to the user's repository directory (local)
     private String userRepositoryDirectory;
 
     private Git git;
@@ -81,7 +83,7 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
         // Force delete all repositories if invoked right after the application starts
         if (userRepositoryDirectory == null) {
             directoryPath = Paths.get(localRepositoryDirectory);
-            removeRecursively(directoryPath.toFile());
+            FileService.removeRecursively(directoryPath.toFile());
             Files.createDirectories(directoryPath);
             return "All repositories have been deleted.";
         }
@@ -96,7 +98,7 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
                 }
                 // Delete the repository directory and its contents recursively
                 log.info("Deleting repository directory: {}", directoryPath);
-                removeRecursively(directoryPath.toFile());
+                FileService.removeRecursively(directoryPath.toFile());
             } catch (Exception e) {
                 log.error("Failed to delete repository directory: {}", e.getMessage());
                 throw e;
@@ -110,23 +112,6 @@ public class GithubRepositoryServiceImpl implements GithubRepositoryService {
 
     // Helper method to extract the repository name from the URL
     private String getRepositoryName(String repositoryUrlString) {
-        String[] urlParts = repositoryUrlString.split("/");
-        String repositoryName = urlParts[urlParts.length - 1];
-        if (repositoryName.endsWith(".git")) {
-            repositoryName = repositoryName.substring(0, repositoryName.length() - 4);
-        }
-        return repositoryName;
-    }
-
-    // Helper method to delete a directory and its contents recursively
-    private void removeRecursively(File f) {
-        if (f.isDirectory()) {
-            for (File c : f.listFiles()) {
-                removeRecursively(c);
-            }
-        }
-        if (!f.delete()) {
-            log.error("Failed to delete file: {}", f.getAbsolutePath());
-        }
+        return FileService.getFileNameWithoutExtension(repositoryUrlString);
     }
 }
