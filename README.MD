@@ -19,7 +19,11 @@ cd package-mapper
 3. Create a `.env` file in the root directory with the following variable(s):
 ```
 REPOSITORY_DIRECTORY=<path where all repositories will be downloaded>
+ANALYSIS_DIRECTORY=<path where all the analysis logs will be stored>
+LOGS_DIRECTORY=<path where all general logs will be stored>
 ```
+
+Ensure that these repositories exist.
 
 4. Run the application using Maven:
 ```shell
