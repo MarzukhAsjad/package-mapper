@@ -49,7 +49,7 @@ The following JSON can be used as the request body (example):
 
 No request body is required. If you have downloaded a repository and have not closed the application or deleted the repository yet, this endpoint will automatically delete that specific repository. Otherwise, it will delete all repositories by default.
 
-3. `/analyse/custom`: Analyzes the downloaded code and generates the dependency graph.
+3. `/analyse/custom`: Analyses the downloaded code and generates the dependency graph.
 
 Pass in the absolute path of the local repository you just downloaded in the form of a JSON. The following JSON can be used as the request body (example):
 ```json
@@ -57,6 +57,10 @@ Pass in the absolute path of the local repository you just downloaded in the for
     "repositoryPath": "C:/Users/User/PackageMapper/repositories/Telegram"
 }
 ```
+
+4. `/analyse/all`: Analyses all repositories downloaded and stored in the repositories folder
+
+No request body is required. 
 
 ## Overview
 
