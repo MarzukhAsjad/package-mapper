@@ -41,6 +41,11 @@ public class FileService {
         return fileName.substring(lastIndexOfSlash + 1);
     }
 
+    // Get the filename only without any path
+    public String getFileNameOnly(String fileName) {
+        return Paths.get(fileName).getFileName().toString();
+    }
+
     // Get all files in a directory and its subdirectories
     public List<String> getFiles(String directoryPath) {
         List<String> files = null;
