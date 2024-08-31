@@ -23,7 +23,7 @@ ANALYSIS_DIRECTORY=<path where all the analysis logs will be stored>
 LOGS_DIRECTORY=<path where all general logs will be stored>
 ```
 
-Ensure that these repositories exist.
+Ensure that these folders with the paths exist.
 
 4. Run the application using Maven:
 ```shell
