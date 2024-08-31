@@ -36,6 +36,7 @@ build/
 !**/src/main/**/repositories/
 
 ### Logs ###
+analyses/*.log
 *.log
 *.txt
 
