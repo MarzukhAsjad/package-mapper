@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import java.util.Map;
 
 import com.mizookie.packagemapper.services.AnalyserService;
 
@@ -23,12 +24,20 @@ public class AnalyserController {
         this.analyserService = analyserService;
     }
 
+    /**
+     * This method receives a repository path and triggers the analysis of the code in the repository.
+     * @param requestBody The request body containing the repository path.
+     */
     @PostMapping("/custom")
-    public void analyse(@RequestBody String repositoryPath) {
+    public void analyse(@RequestBody Map<String, String> requestBody) {
+        String repositoryPath = requestBody.get("repositoryPath");
         log.info("Repository path received: {}", repositoryPath);
         analyserService.analyse(repositoryPath);
     }
 
+    /**
+     * This method triggers the analysis of the code in all repositories.
+     */
     @PostMapping("/all")
     public void analyseAll() {
         log.info("Analyzing all repositories...");
