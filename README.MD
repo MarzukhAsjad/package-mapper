@@ -17,7 +17,7 @@ cd package-mapper
 ```
 
 3. Create a `.env` file in the root directory with the following variable(s):
-```
+```Dotenv
 REPOSITORY_DIRECTORY=<path where all repositories will be downloaded>
 ANALYSIS_DIRECTORY=<path where all the analysis logs will be stored>
 LOGS_DIRECTORY=<path where all general logs will be stored>
@@ -68,9 +68,9 @@ The principal idea behind Package Mapper is to aid in understanding the relation
 
 1. **Analyzing the Repository**: The tool analyzes the provided GitHub repository and identifies the classes, modules, and their import statements.
 2. **Generating Dependencies**: By tracing the import statements, Package Mapper generates a dependency graph that shows how the classes and modules interact with each other.
-3. **Visualizing the Dependencies**: The generated dependency graph is visualized in a 2D space, allowing users to pan and explore the relationships between classes and modules.
+3. **Visualizing the Dependencies** (coming soon): The generated dependency graph is visualized in a 2D space, allowing users to pan and explore the relationships between classes and modules.
 
-## Features
+## Features (coming soon)
 
 - **Web-based Interface**: Package Mapper provides a user-friendly web interface where users can enter the GitHub repository path.
 - **Dependency Visualization**: The tool displays the visualized graph in a 2D space, with the main class/module in the center and branches pointing out to other classes/modules.
@@ -79,7 +79,7 @@ The principal idea behind Package Mapper is to aid in understanding the relation
 
 ## System Design
 
-### User Interface
+### Graphical User Interface (coming soon)
 
 - Web-based interface for users to interact with the repository visualizer.
 - Input field to enter the GitHub repository path.
@@ -93,7 +93,7 @@ The principal idea behind Package Mapper is to aid in understanding the relation
 - Build a graph data structure to represent relationships and dependencies.
 - Store the graph data structure for visualization.
 
-### Visualization
+### Visualization (coming soon)
 
 - Utilize a graph visualization library (e.g., D3.js) to render the graph.
 - Map the graph data to visual elements: circles for classes/modules and arrows for dependencies/imports.
@@ -103,11 +103,10 @@ The principal idea behind Package Mapper is to aid in understanding the relation
 
 ### Integration with GitHub
 
-- Utilize GitHub APIs to access the repository and retrieve the code.
-- Authenticate the user and obtain necessary permissions to access the repository.
-- Handle rate limits and ensure smooth integration with the GitHub platform.
+- Utilize GitHub APIs to access and download public repositories and retrieve the code.
+- Authenticate the user and obtain necessary permissions to access and download their private repositories.
 
-### Deployment
+### Deployment (coming soon)
 
 - Deploy the system as an online service accessible through a web browser.
 - Host the backend logic and visualization on a server or cloud platform.
@@ -115,8 +114,8 @@ The principal idea behind Package Mapper is to aid in understanding the relation
 
 ### Future Enhancements
 
-- Develop an offline version for analyzing private codebases.
-- Extend support for Java projects and other languages.
+- Downloading and analysing private repositories.
+- Extend support for more languages other than Java and JavaScript.
 - Enhance the visualization with a 3D representation.
 - Integrate a feature to visualize git commit history, animating code evolution.
 
