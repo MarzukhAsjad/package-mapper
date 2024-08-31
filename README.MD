@@ -51,11 +51,11 @@ No request body is required. If you have downloaded a repository and have not cl
 
 3. `/analyse/custom`: Analyzes the downloaded code and generates the dependency graph.
 
-Pass in the absolute path of the local repository you just downloaded as a string. Please note that this should be a string, not a JSON.
-
-Example:
-```
-C:\Users\User\PackageMapper\repositories\Telegram
+Pass in the absolute path of the local repository you just downloaded in the form of a JSON. The following JSON can be used as the request body (example):
+```json
+{
+    "repositoryPath": "C:/Users/User/PackageMapper/repositories/Telegram"
+}
 ```
 
 ## Overview
