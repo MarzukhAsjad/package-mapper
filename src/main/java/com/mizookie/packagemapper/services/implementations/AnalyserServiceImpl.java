@@ -1,6 +1,7 @@
 package com.mizookie.packagemapper.services.implementations;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,13 @@ public class AnalyserServiceImpl implements AnalyserService {
     @Value("${repository.directory}")
     private String localRepositoryDirectory;
 
+    private final Printer printer;
+    
+    @Autowired
+    public AnalyserServiceImpl(Printer printer) {
+        this.printer = printer;
+    }
+
     private Map<String, List<String>> classesMap = new HashMap<>();
     
     /**
@@ -35,9 +43,9 @@ public class AnalyserServiceImpl implements AnalyserService {
         // Improve visualization of the parsed data in a graphical format
         log.info("Visualizing the parsed data...");
         for (Map.Entry<String, List<String>> entry : classesMap.entrySet()) {
-            Printer.log("Current File: " + entry.getKey());
+            printer.log("Current File: " + entry.getKey());
             for (String importStatement : entry.getValue()) {
-                Printer.log("----- Import: " + importStatement);
+                printer.log("----- Import: " + importStatement);
             }
         }
     }
@@ -50,7 +58,8 @@ public class AnalyserServiceImpl implements AnalyserService {
     @Override
     public void analyse(String repositoryPath) {
         List<String> repoFiles = FileService.getFiles(repositoryPath);
-        Printer.log("Analyzing repository: " + repositoryPath);
+        printer.createAnalysisLog(repositoryPath);
+        printer.log("Analyzing repository: " + FileService.getFileNameOnly(repositoryPath));
         for (String file : repoFiles) {
             // Skip files that do not have the following extensions or contain ".git"
             String[] doNotSkipExtensions = {".java", ".js", ".ts", ".jsx", ".tsx", ".c", ".cpp", ".csharp", ".py", ".rb", ".kt"};
