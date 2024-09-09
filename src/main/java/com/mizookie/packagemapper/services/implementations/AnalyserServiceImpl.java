@@ -26,10 +26,12 @@ public class AnalyserServiceImpl implements AnalyserService {
     private String localRepositoryDirectory;
 
     private final Printer printer;
+    private GraphServiceImpl graphService;
     
     @Autowired
-    public AnalyserServiceImpl(Printer printer) {
+    public AnalyserServiceImpl(Printer printer, GraphServiceImpl graphService) {
         this.printer = printer;
+        this.graphService = graphService;
     }
 
     private Map<String, List<String>> classesMap = new HashMap<>();
@@ -76,6 +78,11 @@ public class AnalyserServiceImpl implements AnalyserService {
             }
             
             List<String> imports = parse(crawl(file));
+            graphService.setDependencyMap(classesMap);
+            for (String importStatement : imports) {
+                graphService.addDependency(file, importStatement);
+            }
+            graphService.displayGraph();
             classesMap.put(file, imports);
         }
         
