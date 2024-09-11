@@ -44,6 +44,7 @@ public class GithubRepositoryController {
             String responseMessageString = githubRepositoryService.downloadPublicRepository(repositoryUrlString);
             return ResponseEntity.ok(Map.of(MESSAGE_KEY, responseMessageString));
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             return ResponseEntity.badRequest().body(Map.of(MESSAGE_KEY, e.getMessage()));
         }
     }
@@ -60,6 +61,7 @@ public class GithubRepositoryController {
             String responseMessageString = githubRepositoryService.deleteRepository();
             return ResponseEntity.ok(Map.of(MESSAGE_KEY, responseMessageString));
         } catch (Exception e) {
+            log.error(e.getMessage(), e);
             return ResponseEntity.badRequest().body(Map.of(MESSAGE_KEY, e.getMessage()));
         }
     } 
