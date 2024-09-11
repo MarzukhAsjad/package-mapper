@@ -18,9 +18,9 @@ cd package-mapper
 
 3. Create a `.env` file in the root directory with the following variable(s):
 ```Dotenv
-REPOSITORY_DIRECTORY=<path where all repositories will be downloaded>
-ANALYSIS_DIRECTORY=<path where all the analysis logs will be stored>
-LOGS_DIRECTORY=<path where all general logs will be stored>
+REPOSITORY_DIRECTORY=<absolute path where all repositories will be downloaded>
+ANALYSIS_DIRECTORY=<absolute path where all the analysis logs will be stored>
+LOGS_DIRECTORY=<absolute path where all general logs will be stored>
 ```
 
 Ensure that these folders with the paths exist.
