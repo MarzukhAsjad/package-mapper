@@ -79,11 +79,14 @@ public class AnalyserServiceImpl implements AnalyserService {
             
             List<String> imports = parse(crawl(file));
             graphService.setDependencyMap(classesMap);
+            
             for (String importStatement : imports) {
-                graphService.addDependency(file, importStatement);
+                String[] importParts = importStatement.split("\\s+");
+                for (String part : importParts) {
+                    graphService.addDependency(FileService.getFileNameWithExtension(file), part);
+                }
             }
             graphService.displayGraph();
-            classesMap.put(file, imports);
         }
         
         // Add the parsed data as value for the key "path" in the classesMap
