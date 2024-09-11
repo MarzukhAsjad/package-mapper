@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.ArrayList;
 
 import com.mizookie.packagemapper.services.GraphService;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
 
 import lombok.Data;
 
@@ -31,11 +34,15 @@ public class GraphServiceImpl implements GraphService {
     @Override
     public void displayGraph() {
         // Display the graph
-        for (String source : dependencyMap.keySet()) {
-            System.out.println(source + " --> ");
-            for (String target : dependencyMap.get(source)) {
-                System.out.println("  " + target);
+        try (PrintWriter writer = new PrintWriter(new FileWriter("graph.txt"))) {
+            for (String source : dependencyMap.keySet()) {
+                writer.println(source + " --> ");
+                for (String target : dependencyMap.get(source)) {
+                    writer.println("          " + target);
+                }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
