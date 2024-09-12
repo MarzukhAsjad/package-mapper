@@ -7,5 +7,5 @@ public interface GraphService {
     // Add a dependency between two classes
     void addDependency(String source, String target);
     // Display the graph
-    void displayGraph();
+    void displayGraph(String repositoryName);
 }

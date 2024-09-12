@@ -86,11 +86,10 @@ public class AnalyserServiceImpl implements AnalyserService {
                     graphService.addDependency(FileService.getFileNameWithExtension(file), part);
                 }
             }
-            graphService.displayGraph();
         }
         
         // Add the parsed data as value for the key "path" in the classesMap
-        visualize(classesMap);
+        graphService.displayGraph(FileService.getFileNameOnly(repositoryPath));
     }
 
     /**

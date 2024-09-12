@@ -1,4 +1,5 @@
 package com.mizookie.packagemapper.services.implementations;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import java.util.List;
@@ -18,6 +19,9 @@ public class GraphServiceImpl implements GraphService {
     // HashMap to store the dependencyMap between classes
     private Map<String, List<String>> dependencyMap;
 
+    @Value("${analysis.directory}")
+    private String analysisDirectory;
+
     // Add a dependency between two classes
     @Override
     public void addDependency(String source, String target) {
@@ -32,9 +36,10 @@ public class GraphServiceImpl implements GraphService {
     }
     // Display the graph
     @Override
-    public void displayGraph() {
+    public void displayGraph(String repositoryName) {
         // Display the graph
-        try (PrintWriter writer = new PrintWriter(new FileWriter("graph.txt"))) {
+        String fileName = analysisDirectory + "/" + repositoryName + ".txt";
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName))) {
             for (String source : dependencyMap.keySet()) {
                 writer.println(source + " --> ");
                 for (String target : dependencyMap.get(source)) {
