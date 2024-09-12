@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.mizookie.packagemapper.services.AnalyserService;
+import com.mizookie.packagemapper.services.GraphService;
 import com.mizookie.packagemapper.utils.FileService;
 
 import java.util.ArrayList;
@@ -24,11 +25,11 @@ public class AnalyserServiceImpl implements AnalyserService {
     @Value("${repository.directory}")
     private String localRepositoryDirectory;
 
-    private GraphServiceImpl graphService;
+    private GraphService graphService;
 
     
     @Autowired
-    public AnalyserServiceImpl(GraphServiceImpl graphService) {
+    public AnalyserServiceImpl(GraphService graphService) {
         this.graphService = graphService;
     }
 

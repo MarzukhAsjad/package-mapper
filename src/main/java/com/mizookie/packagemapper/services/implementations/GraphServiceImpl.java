@@ -10,10 +10,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
 
-import lombok.Data;
-
 @Service
-@Data
 public class GraphServiceImpl implements GraphService {
 
     // HashMap to store the dependencyMap between classes
@@ -21,6 +18,12 @@ public class GraphServiceImpl implements GraphService {
 
     @Value("${analysis.directory}")
     private String analysisDirectory;
+    // Set the dependency map
+    @Override
+    public void setDependencyMap(Map<String, List<String>> classesMap) {
+        // Set the dependency map
+        this.dependencyMap = classesMap;
+    }
 
     // Add a dependency between two classes
     @Override
