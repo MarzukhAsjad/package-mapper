@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.mizookie.packagemapper.services.AnalyserService;
 import com.mizookie.packagemapper.utils.FileService;
-import com.mizookie.packagemapper.utils.Printer;
 
 import java.util.ArrayList;
 import java.io.IOException;
@@ -25,12 +24,11 @@ public class AnalyserServiceImpl implements AnalyserService {
     @Value("${repository.directory}")
     private String localRepositoryDirectory;
 
-    private final Printer printer;
     private GraphServiceImpl graphService;
+
     
     @Autowired
-    public AnalyserServiceImpl(Printer printer, GraphServiceImpl graphService) {
-        this.printer = printer;
+    public AnalyserServiceImpl(GraphServiceImpl graphService) {
         this.graphService = graphService;
     }
 
@@ -43,13 +41,7 @@ public class AnalyserServiceImpl implements AnalyserService {
     @Override
     public void visualize(Map<String, List<String>> classesMap) {
         // Improve visualization of the parsed data in a graphical format
-        log.info("Visualizing the parsed data...");
-        for (Map.Entry<String, List<String>> entry : classesMap.entrySet()) {
-            printer.log("Current File: " + entry.getKey());
-            for (String importStatement : entry.getValue()) {
-                printer.log("----- Import: " + importStatement);
-            }
-        }
+        log.info("Visualizing the parsed data...");       
     }
 
     /**
@@ -60,8 +52,6 @@ public class AnalyserServiceImpl implements AnalyserService {
     @Override
     public void analyse(String repositoryPath) {
         List<String> repoFiles = FileService.getFiles(repositoryPath);
-        printer.createAnalysisLog(repositoryPath);
-        printer.log("Analyzing repository: " + FileService.getFileNameOnly(repositoryPath));
         for (String file : repoFiles) {
             // Skip files that do not have the following extensions or contain ".git"
             String[] doNotSkipExtensions = {".java", ".js", ".ts", ".jsx", ".tsx", ".c", ".cpp", ".csharp", ".py", ".rb", ".kt"};
