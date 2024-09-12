@@ -24,7 +24,7 @@ public class GraphServiceImpl implements GraphService {
 
     // Add a dependency between two classes
     @Override
-    public void addDependency(String source, String target) {
+    public void addEdge(String source, String target) {
         // Add a dependency between two classes
         if (dependencyMap.containsKey(source)) {
             dependencyMap.get(source).add(target);

@@ -73,7 +73,7 @@ public class AnalyserServiceImpl implements AnalyserService {
             for (String importStatement : imports) {
                 String[] importParts = importStatement.split("\\s+");
                 for (String part : importParts) {
-                    graphService.addDependency(FileService.getFileNameWithExtension(file), part);
+                    graphService.addEdge(FileService.getFileNameWithExtension(file), part);
                 }
             }
         }
