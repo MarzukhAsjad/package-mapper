@@ -108,7 +108,7 @@ public class AnalyserServiceImpl implements AnalyserService {
     @Override
     public void visualizeDemo() {
         // Visualize the parsed data
-        Graph<String, DefaultEdge> graph = GraphServiceImpl.createSmallGraph();
+        Graph<String, DefaultEdge> graph = GraphServiceImpl.createMediumGraph();
         graphService.setDependencyMap(graph);
         graphService.displayGraph("test");
     }

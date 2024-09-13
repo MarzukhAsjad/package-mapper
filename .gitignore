@@ -42,3 +42,8 @@ analyses/*.log
 
 ### Environment ###
 .env
+
+### Picture ###
+*.png
+*.jpg
+*.jpeg

@@ -129,4 +129,21 @@ public class GraphServiceImpl implements GraphService {
 
         return graph;
     }
+
+    public static Graph<String, DefaultEdge> createMediumGraph() {
+        Graph<String, DefaultEdge> graph = new DefaultDirectedGraph<>(DefaultEdge.class);
+
+        // Add vertices
+        for (int i = 1; i <= 100; i++) {
+            graph.addVertex("v" + i);
+        }
+
+        // Add edges
+        for (int i = 1; i < 100; i++) {
+            graph.addEdge("v" + i, "v" + (i + 1));
+        }
+        graph.addEdge("v100", "v1");
+
+        return graph;
+    }
 }
