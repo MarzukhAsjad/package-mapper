@@ -7,4 +7,5 @@ public interface AnalyserService {
     void visualize(Map<String, List<String>> classesMap); // visualize the parsed data
     void analyse(String repositoryPath); // orchestrate the crawling, parsing and visualization
     void analyse() throws IOException; // analyze all repositories
+    void visualizeDemo(); // visualize the parsed data
 }

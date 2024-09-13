@@ -1,6 +1,7 @@
 package com.mizookie.packagemapper.services.implementations;
 import java.util.Map;
 
+import org.jgrapht.graph.DefaultEdge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.HashMap;
+import org.jgrapht.Graph;
+
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -42,7 +45,10 @@ public class AnalyserServiceImpl implements AnalyserService {
     @Override
     public void visualize(Map<String, List<String>> classesMap) {
         // Improve visualization of the parsed data in a graphical format
-        log.info("Visualizing the parsed data...");       
+        log.info("Visualizing the parsed data...");  
+        
+        // Generate the visualization
+        graphService.displayGraph(FileService.getFileNameOnly(localRepositoryDirectory));     
     }
 
     /**
@@ -53,6 +59,7 @@ public class AnalyserServiceImpl implements AnalyserService {
     @Override
     public void analyse(String repositoryPath) {
         List<String> repoFiles = FileService.getFiles(repositoryPath);
+        graphService.setDependencyMap(classesMap);
         for (String file : repoFiles) {
             // Skip files that do not have the following extensions or contain ".git"
             String[] doNotSkipExtensions = {".java", ".js", ".ts", ".jsx", ".tsx", ".c", ".cpp", ".csharp", ".py", ".rb", ".kt"};
@@ -69,7 +76,6 @@ public class AnalyserServiceImpl implements AnalyserService {
             }
             
             List<String> imports = parse(crawl(file));
-            graphService.setDependencyMap(classesMap);
             
             for (String importStatement : imports) {
                 String[] importParts = importStatement.split("\\s+");
@@ -80,7 +86,7 @@ public class AnalyserServiceImpl implements AnalyserService {
         }
         
         // Add the parsed data as value for the key "path" in the classesMap
-        graphService.displayGraph(FileService.getFileNameOnly(repositoryPath));
+        visualize(classesMap);
     }
 
     /**
@@ -97,6 +103,14 @@ public class AnalyserServiceImpl implements AnalyserService {
         for (String repository : repositories) {
             analyse(repository);
         }
+    }
+
+    @Override
+    public void visualizeDemo() {
+        // Visualize the parsed data
+        Graph<String, DefaultEdge> graph = GraphServiceImpl.createSmallGraph();
+        graphService.setDependencyMap(graph);
+        graphService.displayGraph("test");
     }
 
     // This method crawls the code in the repository and extracts the imports

@@ -47,4 +47,13 @@ public class AnalyserController {
             log.error("Failed to analyze all repositories: {}", e.getMessage());
         }
     }
+
+    /**
+     * This method triggers the visualization of demo data.
+     */
+    @PostMapping("/visualize-demo")
+    public void visualize() {
+        log.info("Visualizing the parsed data...");
+        analyserService.visualizeDemo();
+    }
 }
